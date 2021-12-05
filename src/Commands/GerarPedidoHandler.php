@@ -3,16 +3,22 @@
 namespace Alura\DesignPattern\Commands;
 
 use DateTimeImmutable;
-use Alura\DesignPattern\{AcoesAoGerarPedido\CriarPedidoNoBanco,
-    AcoesAoGerarPedido\EnviarPedidoPorEmail,
-    AcoesAoGerarPedido\LogGerarPedido,
-    Orcamento,
-    Pedido};
+use Alura\DesignPattern\Pedido;
+use Alura\DesignPattern\Orcamento;
+use Alura\DesignPattern\AcoesAposGerarPedido\AcaoAposGerarPedido;
 
 class GerarPedidoHandler
 {
-    public function __construct(/* Pedido Repository, MailService */)
+    /**
+     * @var AcaoAposGerarPedido[]
+     */
+    private array $acoesAposGerarPedido = [];
+    
+    public function __construct(/* Pedido Repository, MailService */) {}
+
+    public function adicionarAcaoAoGerarPedido(AcaoAposGerarPedido $acao)
     {
+        $this->acoesAposGerarPedido[] = $acao;
     }
 
     public function execute(GerarPedido $gerarPedido)
@@ -26,12 +32,8 @@ class GerarPedidoHandler
         $pedido->nomeCliente = $gerarPedido->getNomeCliente();
         $pedido->orcamento = $orcamento;
 
-        $criarPedidoNoBanco = new CriarPedidoNoBanco();
-        $enviarPedidoPorEmail = new EnviarPedidoPorEmail();
-        $logGerarPedido = new LogGerarPedido();
-
-        $criarPedidoNoBanco->execute($pedido);
-        $enviarPedidoPorEmail->execute($pedido);
-        $logGerarPedido->execute($pedido);
+        foreach ($this->acoesAposGerarPedido as $acao) {
+            $acao->execute($pedido);
+        }
     }
 }
