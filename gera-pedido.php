@@ -13,7 +13,7 @@ $nomeCliente = $argv[3];
 
 $gerarPedido = new GerarPedido($valorOrcamento, $numeroDeItens, $nomeCliente);
 $gerarPedidoHandler = new GerarPedidoHandler(/* dependências */);
-$gerarPedidoHandler->adicionarAcaoAoGerarPedido(new CriarPedidoNoBanco());
-$gerarPedidoHandler->adicionarAcaoAoGerarPedido(new EnviarPedidoPorEmail());
-$gerarPedidoHandler->adicionarAcaoAoGerarPedido(new LogGerarPedido());
+$gerarPedidoHandler->attach(new CriarPedidoNoBanco());
+$gerarPedidoHandler->attach(new EnviarPedidoPorEmail());
+$gerarPedidoHandler->attach(new LogGerarPedido());
 $gerarPedidoHandler->execute($gerarPedido);

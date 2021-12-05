@@ -2,11 +2,12 @@
 
 namespace Alura\DesignPattern\AcoesAposGerarPedido;
 
-use Alura\DesignPattern\Pedido;
+use SplSubject;
+use SplObserver;
 
-class EnviarPedidoPorEmail implements AcaoAposGerarPedido
+class EnviarPedidoPorEmail implements SplObserver
 {
-    public function execute(Pedido $pedido): void
+    public function update(SplSubject $subject)
     {
         echo "Enviando e-mail de pedido gerado".PHP_EOL;
     }

@@ -2,12 +2,14 @@
 
 namespace Alura\DesignPattern\AcoesAposGerarPedido;
 
-use Alura\DesignPattern\Pedido;
+use SplSubject;
+use SplObserver;
 
-class CriarPedidoNoBanco implements AcaoAposGerarPedido
+class CriarPedidoNoBanco implements SplObserver
 {
-    public function execute(Pedido $pedido): void
+    public function update(SplSubject $subject)
     {
+        // pedido: $subject->pedido
         echo "Salvando pedido no banco de dados".PHP_EOL;
     }
 }
